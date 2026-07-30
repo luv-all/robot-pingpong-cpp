@@ -19,7 +19,6 @@ public:
   void setPosition(double position, bool wait = true);
   [[nodiscard]] bool hasAlarm() const;
   void resetAlarm() const;
-  void guessLimits();
   void setMaxVelocity(double velocity) const;
   void update();
   [[nodiscard]] bool isMoving() const;

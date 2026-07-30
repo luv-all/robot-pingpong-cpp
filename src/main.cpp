@@ -11,19 +11,11 @@ int main() {
   Arm arm;
   arm.init();
   auto lm = LinearMotor(0);
-  std::mutex mtx;
-  std::thread([&] {
-    mtx.lock();
-    lm.guessLimits();
-    lm.off();
-    mtx.unlock();
-  }).detach();
   Predictor predictor;
   Visualizer visualizer(predictor);
   Vision vision;
   vision.init(visualizer);
 
-  mtx.lock();
   lm.on();
 
   try {

@@ -53,33 +53,6 @@ void LinearMotor::resetAlarm() const {
   AxmSignalServoAlarmReset(axisNo, FALSE);
 }
 
-void LinearMotor::guessLimits() {
-  setPosition(5);
-  AxmMoveVel(axisNo, -10, 100, 100);
-  while (!hasAlarm())
-    ;
-  resetAlarm();
-  AxmStatusSetCmdPos(axisNo, 0);
-  AxmStatusSetActPos(axisNo, 0);
-
-  setPosition(110);
-  AxmMoveVel(axisNo, 10, 100, 100);
-  while (!hasAlarm())
-    ;
-  resetAlarm();
-
-  const double highLimit = getPosition();
-  AxmStatusSetCmdPos(axisNo, highLimit);
-
-  AxmSignalSetSoftLimit(axisNo, ENABLE, EMERGENCY_STOP, COMMAND, highLimit - 1,
-                        1);
-  max = highLimit - 1;
-  min = 1;
-  setMaxVelocity(2000);
-  AxmStatusSetCmdPos(axisNo, getPosition());
-  std::this_thread::sleep_for(std::chrono::milliseconds(300));
-  setPosition(highLimit / 2);
-}
 void LinearMotor::setMaxVelocity(const double velocity) const {
   AxmMotSetMaxVel(axisNo, velocity);
 }
@@ -103,7 +76,7 @@ void LinearMotor::off() const {
 void LinearMotor::on() const { AxmSignalServoOn(axisNo, TRUE); }
 
 LinearMotor::LinearMotor(const int axisNo) : axisNo(axisNo), min(0), max(0) {
-  assert(AxlOpen(7) == 0);
+  assert(AxlOpenNoReset(7) == 0);
   assert(isMotionModule());
   AxmMotSetPulseOutMethod(axisNo, TwoCcwCwHigh);             // 1
   AxmMotSetEncInputMethod(axisNo, ObverseSqr4Mode);          // 2

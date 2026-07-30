@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 #define CAPTURE_WIDTH 1280
-#define CAPTURE_HEIGHT 720
+#define CAPTURE_HEIGHT 800
 #define CANNY_THRESHOLD 400
 #define MIN_AREA 15
 #define MAX_AREA 500
@@ -25,25 +25,25 @@
 #define Y_TABLE_SIZE 1.525
 
 #define OBJECT_POINTS                                                          \
-  {                                                                            \
-    {0, Y_TABLE_SIZE, 0}, {X_TABLE_SIZE, Y_TABLE_SIZE, 0},                     \
-        {X_TABLE_SIZE, 0, 0}, {0, 0, 0}, {X_TABLE_SIZE / 2, -0.1525, 0.15}, {  \
-      X_TABLE_SIZE / 2, Y_TABLE_SIZE + 0.1525, 0.15                            \
-    }                                                                          \
-  }
+  {{0, Y_TABLE_SIZE, 0},                                                       \
+   {X_TABLE_SIZE, Y_TABLE_SIZE, 0},                                            \
+   {X_TABLE_SIZE, 0, 0},                                                       \
+   {0, 0, 0},                                                                  \
+   {X_TABLE_SIZE / 2, -0.1525, 0.15},                                          \
+   {X_TABLE_SIZE / 2, Y_TABLE_SIZE + 0.1525, 0.15}}
 
 #if defined(_WIN32) || defined(_WIN64)
-#define PORT_NAME "COM7"
+#define PORT_NAME "COM8"
 #elif defined(__linux__)
 #define PORT_NAME "/dev/ttyUSB0"
 #elif defined(__APPLE__)
 #define PORT_NAME "/dev/tty.usbserial-FT0G1Q2B"
 #endif
 
-#define BASE_ID 1
-#define SHOULDER_ID 2
-#define ELBOW_ID 3
-#define YAW_WRIST_ID 4
-#define PITCH_WRIST_ID 5
+#define SHOULDER_ID 1
+#define SHOULDER_PRIME_ID 2
+#define SHOULDER_YAW_ID 3
+#define ELBOW_ID 4
+#define WRIST_ID 5
 
 #endif

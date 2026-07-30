@@ -10,18 +10,18 @@
 #include <mutex>
 
 class Arm {
-  Servos::Mx64P2 base = Servos::Mx64P2(PORT_NAME, BASE_ID);
-  Servos::Mx64P2 shoulder = Servos::Mx64P2(PORT_NAME, SHOULDER_ID);
-  Servos::Mx64P2 elbow = Servos::Mx64P2(PORT_NAME, ELBOW_ID);
-  Servos::Mx28P2 yawWrist = Servos::Mx28P2(PORT_NAME, YAW_WRIST_ID);
-  Servos::Mx28P2 pitchWrist = Servos::Mx28P2(PORT_NAME, PITCH_WRIST_ID);
-  std::list<BaseMotor *> motors = {&base, &shoulder, &elbow, &yawWrist,
-                                   &pitchWrist};
+  Servos::Mx64P2 shoulderPitch = Servos::Mx64P2(PORT_NAME, SHOULDER_ID);
+  Servos::Mx64P2 shoulderPitchRev =
+      Servos::Mx64P2(PORT_NAME, SHOULDER_PRIME_ID);
+  Servos::Mx64P2 shoulderYaw = Servos::Mx64P2(PORT_NAME, SHOULDER_YAW_ID);
+  Servos::Mx28P2 elbow = Servos::Mx28P2(PORT_NAME, ELBOW_ID);
+  Servos::Mx28P2 wrist = Servos::Mx28P2(PORT_NAME, WRIST_ID);
+  std::list<BaseMotor *> motors = {&shoulderPitch, &shoulderPitchRev,
+                                   &shoulderYaw, &elbow, &wrist};
   bool resetted = false;
   std::mutex mtx;
-  static bool inverseKinematics(double x, double y, double z, double &yawTheta1,
-                                double &yawTheta2, double &theta1,
-                                double &theta2, double &theta3,
+  static bool inverseKinematics(double x, double y, double z, double &q1,
+                                double &q2, double &q3, double &q4,
                                 double pi = M_PI / 2, double yawPi = 0);
 
 public:

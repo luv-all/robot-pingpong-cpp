@@ -36,8 +36,8 @@ void Arm::init() {
 }
 
 bool Arm::inverseKinematics(const double x, const double y, const double z,
-                            double &q1, double &q2, double &q3, double &q4,
-                            const double pitch, const double yaw) {
+                            double &q1, double &q1Rev, double &q2, double &q3,
+                            double &q4, const double pitch, const double yaw) {
   q2 = 0;
 
   const auto l1 = 223.602;
@@ -61,6 +61,7 @@ bool Arm::inverseKinematics(const double x, const double y, const double z,
     return false;
   }
   q1 = 180 + theta1 / M_PI * 180;
+  q1Rev = 180 - theta1 / M_PI * 180;
   q2 = 0;
   q3 = 180 + theta2 / M_PI * 180;
   q4 = 180 + theta3 / M_PI * 180;
@@ -74,12 +75,12 @@ void Arm::move(const double y, const double z, const bool hitTarget) {
     }
     try {
       for (;;) {
-        double q1, q2, q3, q4;
+        double q1, q1Rev, q2, q3, q4;
         int maxX = 320;
         for (; maxX > 120 &&
                !inverseKinematics(hitTarget ? maxX : 120, 0,
-                                  z + (hitTarget ? 40 : 0), q1, q2, q3, q4,
-                                  (hitTarget ? 60 : 100) * M_PI / 180);
+                                  z + (hitTarget ? 40 : 0), q1, q1Rev, q2, q3,
+                                  q4, (hitTarget ? 60 : 100) * M_PI / 180);
              --maxX)
           ;
         if (maxX <= 120) {
@@ -87,7 +88,7 @@ void Arm::move(const double y, const double z, const bool hitTarget) {
         }
         auto writer = shoulderPitch.getBulkWriter();
         shoulderPitch.setAngleBulk(writer, q1);
-        shoulderPitchRev.setAngleBulk(writer, -q1);
+        shoulderPitchRev.setAngleBulk(writer, q1Rev);
         shoulderYaw.setAngleBulk(writer, q2);
         elbow.setAngleBulk(writer, q3);
         wrist.setAngleBulk(writer, q4);
@@ -116,13 +117,13 @@ void Arm::resetByZ(const double z) {
     }
     try {
       for (;;) {
-        double q1, q2, q3, q4;
-        if (!inverseKinematics(120, 0, z, q1, q2, q3, q4)) {
+        double q1, q1Rev, q2, q3, q4;
+        if (!inverseKinematics(120, 0, z, q1, q1Rev, q2, q3, q4)) {
           break;
         }
         auto writer = shoulderPitch.getBulkWriter();
         shoulderPitch.setAngleBulk(writer, q1);
-        shoulderPitchRev.setAngleBulk(writer, -q1);
+        shoulderPitchRev.setAngleBulk(writer, q1Rev);
         shoulderYaw.setAngleBulk(writer, q2);
         elbow.setAngleBulk(writer, q3);
         wrist.setAngleBulk(writer, q4);

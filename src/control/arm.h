@@ -21,8 +21,9 @@ class Arm {
   bool resetted = false;
   std::mutex mtx;
   static bool inverseKinematics(double x, double y, double z, double &q1,
-                                double &q2, double &q3, double &q4,
-                                double pi = M_PI / 2, double yawPi = 0);
+                                double &q1Rev, double &q2, double &q3,
+                                double &q4, double pi = M_PI / 2,
+                                double yawPi = 0);
 
 public:
   void init();

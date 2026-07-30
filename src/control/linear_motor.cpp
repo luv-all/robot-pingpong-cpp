@@ -119,6 +119,6 @@ double LinearMotor::map(const double value, const double min,
 }
 
 LinearMotor::~LinearMotor() {
-  AxmSignalServoOn(axisNo, FALSE);
+  // AxmSignalServoOn(axisNo, FALSE);
   AxlClose();
 }

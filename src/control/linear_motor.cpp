@@ -93,7 +93,7 @@ LinearMotor::LinearMotor(const int axisNo) : axisNo(axisNo), min(0), max(0) {
   AxmHomeSetVel(axisNo, 100, 100, 20, 1, 400, 400); // 16, 17, 18, 19, 20, 21
   AxmSignalSetSoftLimit(axisNo, DISABLE, EMERGENCY_STOP, COMMAND, 280000,
                         100);                        // 39, 38, 37, 24, 25
-  AxmMotSetMoveUnitPerPulse(axisNo, 1, 2500);        // 27, 26
+  AxmMotSetMoveUnitPerPulse(axisNo, 1, 250000);      // 27, 26
   AxmMotSetParaLoad(axisNo, 1000, 200, 400, 400);    // 28, 29, 30, 31
   AxmMotSetAbsRelMode(axisNo, POS_ABS_MODE);         // 32
   AxmMotSetProfileMode(axisNo, SYM_TRAPEZOIDE_MODE); // 33
@@ -101,6 +101,9 @@ LinearMotor::LinearMotor(const int axisNo) : axisNo(axisNo), min(0), max(0) {
   AxmSignalSetServoAlarmResetLevel(axisNo, HIGH);    // 35
   // 36: ENCODER_TYPE -> ENCODER_TYPE_INCREMENTAL
   AxmMotSetAccelUnit(axisNo, UNIT_SEC2); // 40
+
+  min = 0;
+  max = 1.3;
 
   if (hasAlarm()) {
     resetAlarm();

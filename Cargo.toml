@@ -1,0 +1,43 @@
+[package]
+name = "robot-pingpong"
+version = "0.1.0"
+edition = "2021"
+description = "Robot table tennis machine (Rust rewrite)"
+license = "MIT"
+default-run = "robot-pingpong"
+
+[features]
+default = []
+# Enable AJINEXTEK AXL/AXM bindings (Windows motion library).
+ajinextek = []
+# Skip opening real cameras/motors; useful for compile-time smoke tests.
+dry-run = []
+
+[dependencies]
+anyhow = "1"
+thiserror = "1"
+nalgebra = "0.33"
+serialport = "4"
+once_cell = "1"
+parking_lot = "0.12"
+opencv = { version = "0.93", default-features = false, features = [
+    "imgproc",
+    "imgcodecs",
+    "videoio",
+    "highgui",
+    "calib3d",
+    "video",
+    "features2d",
+    "flann",
+] }
+
+[dev-dependencies]
+approx = "0.5"
+
+[[bin]]
+name = "robot-pingpong"
+path = "src/main.rs"
+
+[lib]
+name = "robot_pingpong"
+path = "src/lib.rs"

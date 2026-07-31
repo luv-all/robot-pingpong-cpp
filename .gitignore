@@ -1,1 +1,8 @@
+/target/
+**/*.rs.bk
 cmake-build-*/
+mask.yml
+points.yml
+output*.mkv
+.idea/
+*.iml
